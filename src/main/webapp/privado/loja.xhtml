@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+	<f:event type="preRenderView"
+		listener="#{lojaPizzariaMB.listarPedidos}" />
+</f:metadata>
+<ui:composition template="/template/system.xhtml">
+	<ui:param name="panelTitle" value="#{msgs.loja_loja}" />
+	<ui:define name="content">
+		<h:form id="rootform">
+			<h3>#{msgs.loja_pedidos}</h3>
+			<p:dataTable id="pedidosTable" var="pedidoRow" sortMode="multiple"
+				value="#{lojaPizzariaMB.pedidos}" rowKey="#{pedidoRow.idPedido}"
+				selection="#{lojaPizzariaMB.pedido}" selectionMode="single"
+				paginator="true" rows="8"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				widgetVar="pedidosWidget">
+				<p:ajax event="rowSelect" update=":dialogPedido:pedidoForm"
+					oncomplete="PF('dialogPedido').show()" />
+				<p:column headerText="#{msgs.loja_data_solicitacao}"
+					id="dataSolicitacao" sortBy="#{pedidoRow.dataSolicitacao}">
+					<h:outputText value="#{pedidoRow.dataSolicitacao}">
+						<f:convertDateTime type="both" pattern="dd/MM/yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{msgs.consumidor_consumidor}" id="consumidor"
+					sortBy="#{pedidoRow.consumidor.nomeConsumidor}">  
+					#{pedidoRow.consumidor.nomeConsumidor}
+				</p:column>
+				<p:column headerText="#{msgs.loja_data_fechamento}" id="dataFechamento"
+					sortBy="#{pedidoRow.dataFechamento}">
+					<h:outputText value="#{pedidoRow.dataFechamento}">
+						<f:convertDateTime type="both" pattern="dd/MM/yyyy HH:mm:ss" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+		<p:dialog header="#{msgs.consumidor_pedido}" widgetVar="dialogPedido"
+			resizable="false" closable="true" modal="false" showEffect="fade">
+			<p:ajax event="close" update=":rootform:pedidosTable" oncomplete="PF('pedidosWidget').unselectAllRows()" />
+			<h:form id="dialogPedido">
+				<h:panelGrid columns="1" id="pedidoForm">
+					<h:panelGrid columns="2" style="margin-bottom:10px">
+						<h:outputLabel value="#{msgs.loja_data_solicitacao}" />
+						<h:outputText value="#{lojaPizzariaMB.pedido.dataSolicitacao}">
+							<f:convertDateTime type="both" pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+						<h:outputLabel value="#{msgs.consumidor_consumidor}" />
+						#{lojaPizzariaMB.pedido.consumidor.nomeConsumidor}
+						<h:outputLabel value="#{msgs.global_valor_total}" />
+						<h:outputText value="#{lojaPizzariaMB.pedido.valorTotal}">
+							<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+								pattern="#,##0.00" type="number" />
+						</h:outputText>
+						
+						<h:outputLabel value="#{msgs.loja_itens_pedido}" />
+						<p:dataList value="#{lojaPizzariaMB.pedido.itensPedido}"
+							var="item">
+			        	 #{item.produto}: 
+						#{msgs.global_currency_symbol}<h:outputText value="#{item.precoItemPedido}">
+							<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+								pattern="#,##0.00" type="number" />
+						</h:outputText>
+					</p:dataList>
+						<h:panelGrid columns="3">
+							<p:commandButton rendered="#{lojaPizzariaMB.pedido.dataFechamento == null}"
+								update=":rootform:pedidosTable,:messages,:rootform"
+								value="#{msgs.loja_finalizar_pedido}"
+								oncomplete="PF('finalizarConfirm').show()" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:confirmDialog id="finalizarConfirm" closable="false"
+				message="#{msgs.loja_mensagem_confirmacao}"
+				header="#{msgs.loja_finalizar_pedido}" severity="alert"
+				widgetVar="finalizarConfirm">
+				<p:commandButton id="finalizar" value="#{msgs.loja_finalizar}"
+					update=":rootform:pedidosTable,:messages,:dialogPedido" oncomplete="PF('finalizarConfirm').hide()"
+					actionListener="#{lojaPizzariaMB.finalizarPedido}" />
+				<p:commandButton id="cancelar" value="#{msgs.global_cancelar}" immediate="true"
+					update=":rootform:pedidosTable,:messages" oncomplete="PF('finalizarConfirm').hide()"/>
+			</p:confirmDialog>
+	</ui:define>
+</ui:composition>
+</html>

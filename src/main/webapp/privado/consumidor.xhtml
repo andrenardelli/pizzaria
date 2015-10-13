@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/system.xhtml">
+	<ui:param name="panelTitle" value="#{msgs.consumidor_consumidor}" />
+	<ui:define name="content">
+
+		<h:form id="rootform">
+			<h:panelGrid columns="2">
+				<p:panel>
+					<h2>#{msgs.consumidor_selecionar_produto}</h2>
+					<p:commandLink>
+						<p:ajax event="click" update=":dialogPizzaform:suaPizza"
+							listener="#{consumidorMB.criarPizza}"
+							oncomplete="PF('dialogPizza').show()" /> 
+				#{msgs.consumidor_pizza}</p:commandLink>
+					<br />
+					<p:commandLink>
+						<p:ajax event="click" update=":dialogProdutoId"
+							listener="#{consumidorMB.criarProduto('B')}"
+							oncomplete="PF('dialogProduto').show()" /> 
+				#{msgs.consumidor_bebida}</p:commandLink>
+					<br />
+					<p:commandLink>
+						<p:ajax event="click" update=":dialogProdutoId"
+							listener="#{consumidorMB.criarProduto('S')}"
+							oncomplete="PF('dialogProduto').show()" />
+				#{msgs.consumidor_sobremesa}</p:commandLink>
+					<br />
+				</p:panel>
+				<p:panel id="seuPedido" style="border: 0;">
+					<p:panel
+						rendered="#{consumidorMB.pedido.itensPedido != null and consumidorMB.pedido.itensPedido.size() > 0}">
+						<p:dataList 
+							value="#{consumidorMB.pedido.itensPedido}" var="itenPedido"
+							emptyMessage="">
+							<f:facet name="header">
+			            #{msgs.consumidor_pedido}
+			            #{msgs.global_currency_symbol}<p:outputLabel
+									value="#{consumidorMB.pedido.valorTotal}">
+									<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+										pattern="#,##0.00" type="number" />
+								</p:outputLabel>
+							</f:facet>
+					#{itenPedido.qtdeProdutos}x
+			        #{itenPedido.produto} #{msgs.global_currency_symbol}<p:outputLabel
+								value="#{itenPedido.produto.valorProduto}">
+								<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+									pattern="#,##0.00" type="number" />
+							</p:outputLabel>&nbsp;
+					<p:commandLink
+								action="#{consumidorMB.removerItemPedido(itenPedido)}"
+								update=":rootform:seuPedido">[X]</p:commandLink>
+							<f:facet name="footer">
+								<p:commandButton
+									update=":messages,:rootform:seuPedido,:dialogPizzaform:suaPizza"
+									value="#{msgs.consumidor_finalizar}"
+									actionListener="#{consumidorMB.confirmarPedido}" />
+								<p:commandButton
+									update=":rootform:seuPedido,:dialogPizzaform:suaPizza"
+									value="#{msgs.global_cancelar}"
+									actionListener="#{consumidorMB.cancelarPedido}" />
+							</f:facet>
+						</p:dataList>
+					</p:panel>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		<p:dialog header="#{msgs.consumidor_pizza}" widgetVar="dialogPizza"
+			resizable="false" closable="false" modal="true" showEffect="fade">
+			<h:form id="dialogPizzaform">
+				<h:panelGrid columns="2">
+					<p:dataList value="#{consumidorMB.saboresPizza}" var="sabores">
+						<f:facet name="header">
+			            #{msgs.consumidor_escolher_sabores}
+			        </f:facet>
+						<p:commandLink
+							action="#{consumidorMB.adicionarSaborASuaPizza(sabores)}"
+							update=":messages,:dialogPizzaform:suaPizza">
+			         #{sabores.nomeSaborPizza}: #{msgs.global_currency_symbol}#{sabores.valorSaborPizza}
+			        </p:commandLink>
+					</p:dataList>
+					<p:panel id="suaPizza" style="border: 0;">
+						<p:panel
+							rendered="#{consumidorMB.pizza.saboresPizza != null and consumidorMB.pizza.saboresPizza.size() > 0}">
+							<p:dataList value="#{consumidorMB.pizza.saboresPizza}"
+								var="saboresSuaPizza" type="ordered" emptyMessage="">
+								<f:facet name="header">
+			            #{msgs.consumidor_sua_pizza}
+			            #{msgs.global_currency_symbol}<p:outputLabel
+										value="#{consumidorMB.pizza.valorProduto}">
+										<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+											pattern="#,##0.00" type="number" />
+									</p:outputLabel>
+								</f:facet>
+			        #{saboresSuaPizza.nomeSaborPizza} <p:commandLink
+									action="#{consumidorMB.removerSaborDeSuaPizza(saboresSuaPizza)}"
+									update=":dialogPizzaform:suaPizza">[X]</p:commandLink>
+							</p:dataList>
+							<p:commandButton
+								update=":rootform:seuPedido,:dialogPizzaform:suaPizza"
+								value="#{msgs.consumidor_adicionar}"
+								actionListener="#{consumidorMB.confirmarPizza}"
+								oncomplete="PF('dialogPizza').hide()" />
+						</p:panel>
+					</p:panel>
+					<p:commandButton update=":rootform:seuPedido,:dialogPizzaform"
+						value="#{msgs.global_cancelar}"
+						oncomplete="PF('dialogPizza').hide()"
+						actionListener="#{consumidorMB.cancelarProduto}" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="#{consumidorMB.tituloProduto}" id="dialogProdutoId"
+			widgetVar="dialogProduto" resizable="false" closable="false"
+			modal="true" showEffect="fade">
+			<h:form id="dialogProdutoform">
+				<h:panelGrid columns="2">
+					<p:dataList value="#{consumidorMB.produtos}" var="produto">
+						<f:facet name="header">
+			            #{msgs.consumidor_produto_selecionar}
+			        </f:facet>
+						<p:commandLink action="#{consumidorMB.adicionarProduto(produto)}" immediate="true"
+							update=":messages,:dialogProdutoform:seuProduto">
+			         #{produto.nomeProduto}: #{msgs.global_currency_symbol}#{produto.valorProduto}
+			        </p:commandLink>
+					</p:dataList>
+					<p:panel id="seuProduto" style="border: 0;">
+						<p:panel rendered="#{consumidorMB.produto != null}">
+						#{consumidorMB.produto.nomeProduto}
+							<p:commandLink immediate="true"
+								actionListener="#{consumidorMB.cancelarProduto}"
+								update=":dialogProdutoform:seuProduto">[X]</p:commandLink>
+							<br />
+							<h:outputLabel for="qtdeProduto"
+								value="#{msgs.consumidor_quantidade}" />
+							<p:inputText id="qtdeProduto" maxlength="3" style="width:50px;" type="number"
+								placeholder="1" value="#{consumidorMB.itemPedido.qtdeProdutos}"
+								required="true" label="#{msgs.consumidor_quantidade}">
+								<br />
+								<f:convertNumber integerOnly="true" type="number" />
+								<f:validateLongRange minimum="1" />
+							</p:inputText>
+							<br />
+							<p:commandButton
+								update=":messages,:rootform:seuPedido,:dialogProdutoform:seuProduto"
+								value="#{msgs.consumidor_adicionar}"
+								actionListener="#{consumidorMB.confirmarProduto}"
+								oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dialogProduto').hide()" />
+						</p:panel>
+
+					</p:panel>
+					<p:commandButton
+						update=":rootform:seuPedido,:dialogProdutoform:seuProduto"
+						value="#{msgs.global_cancelar}"
+						oncomplete="PF('dialogProduto').hide()"
+						actionListener="#{consumidorMB.cancelarProduto}" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
