@@ -97,6 +97,7 @@ public class ConsumidorMB extends DefaultMB {
 		{
 			produto = _produto;
 			itemPedido = new ItemPedido();
+			itemPedido.setQtdeProdutos(1);
 			itemPedido.setProduto(produto);
 		}
 		

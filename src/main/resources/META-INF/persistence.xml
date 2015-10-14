@@ -11,14 +11,25 @@
 		<properties>
 <!-- 		    <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" /> -->
 <!-- 	        <property name="hibernate.connection.password" value="cowabunga" /> -->
-<!-- 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost/pizzaria" /> -->
+<!-- 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/pizzaria" /> -->
 <!-- 	        <property name="hibernate.connection.username" value="pizzaria" /> -->
+
+		<!-- Local Version -->
+
+<!-- 	        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> -->
+<!--             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/pizzaria" /> -->
+<!--             <property name="javax.persistence.jdbc.user" value="pizzaria" /> -->
+<!--             <property name="javax.persistence.jdbc.password" value="cowabunga" /> -->
+	
+		<!-- End Local Version -->
+
 <!-- 	        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> -->
 <!--             <property name="javax.persistence.jdbc.url" value="jdbc:postgres://ec2-54-197-241-239.compute-1.amazonaws.com:5432/dkme741ia97jk" /> -->
 <!--             <property name="javax.persistence.jdbc.user" value="uaddeylmjehthz" /> -->
 <!--             <property name="javax.persistence.jdbc.password" value="BMWrR3H8BfhGfVzFlnjgmBxez6" /> -->
+<!--             <property name="hibernate.archive.autodetection" value="class"/> -->
+            
 	        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-            <property name="hibernate.archive.autodetection" value="class"/>
 	        <property name="hibernate.hbm2ddl.auto" value="update" />
 	        <property name="hibernate.show_sql" value="true" />
 	        <property name="hibernate.format_sql" value="true" />

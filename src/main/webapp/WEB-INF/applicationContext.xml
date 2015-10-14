@@ -24,6 +24,7 @@
 		</wss:service>
 	</wss:binding>
 
+	<!-- Heroku version -->
 
 	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
 		id="transactionManager">
@@ -51,6 +52,17 @@
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
 	</bean>
 
+	<!-- Local Version -->
+
+<!-- 	<bean id="entityManagerFactory" -->
+<!-- 		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean"> -->
+<!-- 		<property name="persistenceUnitName" value="pizzaria" /> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> -->
+<!-- 		<property name="entityManagerFactory" ref="entityManagerFactory" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
 
 
 </beans>

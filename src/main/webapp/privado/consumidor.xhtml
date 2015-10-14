@@ -39,7 +39,7 @@
 							value="#{consumidorMB.pedido.itensPedido}" var="itenPedido"
 							emptyMessage="">
 							<f:facet name="header">
-			            #{msgs.consumidor_pedido}
+			            #{msgs.consumidor_pedido} #{msgs.consumidor_dez_por_cento}:
 			            #{msgs.global_currency_symbol}<p:outputLabel
 									value="#{consumidorMB.pedido.valorTotal}">
 									<f:convertNumber maxFractionDigits="2" groupingUsed="true"
@@ -58,7 +58,7 @@
 							<f:facet name="footer">
 								<p:commandButton
 									update=":messages,:rootform:seuPedido,:dialogPizzaform:suaPizza"
-									value="#{msgs.consumidor_finalizar}"
+									value="#{msgs.consumidor_fechar}"
 									actionListener="#{consumidorMB.confirmarPedido}" />
 								<p:commandButton
 									update=":rootform:seuPedido,:dialogPizzaform:suaPizza"
