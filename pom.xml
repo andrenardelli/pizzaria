@@ -430,7 +430,10 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>0.5.4</version>
 				<configuration>
-				<jdkVersion>1.7</jdkVersion>
+					<jdkVersion>1.7</jdkVersion>
+					<processTypes>
+						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+					</processTypes>
 				</configuration>
 			</plugin>
 
