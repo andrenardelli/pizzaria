@@ -14,7 +14,7 @@
 <!-- 			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost/pizzaria" /> -->
 <!-- 	        <property name="hibernate.connection.username" value="pizzaria" /> -->
 	        <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgres://uaddeylmjehthz:BMWrR3H8BfhGfVzFlnjgmBxez6@ec2-54-197-241-239.compute-1.amazonaws.com:5432/dkme741ia97jk" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgres://ec2-54-197-241-239.compute-1.amazonaws.com:5432/dkme741ia97jk?sslfactory=org.postgresql.ssl.NonValidatingFactory;ssl=true " />
             <property name="javax.persistence.jdbc.user" value="uaddeylmjehthz" />
             <property name="javax.persistence.jdbc.password" value="BMWrR3H8BfhGfVzFlnjgmBxez6" />
 	        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
@@ -23,14 +23,6 @@
 	        <property name="hibernate.format_sql" value="true" />
 	        <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
 	        
-	        <property name="hibernate.connection.provider_class"
-          value="org.hibernate.connection.C3P0ConnectionProvider" />
-			
-			<property name="hibernate.c3p0.min_size" value="10"/>    
-            <property name="hibernate.c3p0.max_size" value="100"/>    
-            <property name="hibernate.c3p0.timeout" value="300"/>    
-            <property name="hibernate.c3p0.max_statements" value="50"/>    
-            <property name="hibernate.c3p0.idle_test_period" value="2000"/> 
 
 		</properties>
 	</persistence-unit>
