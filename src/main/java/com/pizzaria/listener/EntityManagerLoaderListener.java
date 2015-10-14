@@ -15,11 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import com.pizzaria.util.HerokuURLAnalyser;
 
-@WebListener
 public class EntityManagerLoaderListener implements ServletContextListener{
 	private static final Logger logger = LoggerFactory.getLogger(EntityManagerLoaderListener.class);
 
-    private String DEFAULT_DB_URL = "jdbc:hsqldb:mem:testdb";
+    private String DEFAULT_DB_URL = "jdbc:h2:~/test.db";
     private static EntityManagerFactory emf;
     private boolean pushAdditionalProperties = true;
 

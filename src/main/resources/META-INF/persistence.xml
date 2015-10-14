@@ -8,7 +8,6 @@
 		<!-- If you are running in a production environment, add a managed data 
 			source, the example data source is just for proofs of concept! -->
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 <!-- 		    <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" /> -->
 <!-- 	        <property name="hibernate.connection.password" value="cowabunga" /> -->
